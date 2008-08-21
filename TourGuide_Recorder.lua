@@ -110,7 +110,7 @@ end)
 
 
 SLASH_TGR1 = "/tgr"
-function SlashCmdList.TGR(self, msg)
+function SlashCmdList.TGR(msg)
 	local _, _, x, y = al:GetCurrentPlayerPosition()
 	Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), x*100, y*100))
 end
