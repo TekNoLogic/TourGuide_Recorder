@@ -1,0 +1,9 @@
+## Interface: 20400
+
+## Title: TourGuide Recorder
+## Notes: Meh
+## Author: Tekkub Stoutwrithe
+
+## SavedVariablesPerCharacter: TourGuide_RecorderDB
+
+TourGuide_Recorder.lua
