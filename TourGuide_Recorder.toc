@@ -1,8 +1,12 @@
 ## Interface: 30000
 
 ## Title: TourGuide Recorder
-## Notes: Meh
+## Notes: TourGuide guide making helper
 ## Author: Tekkub Stoutwrithe
+## Version: Alpha
+## X-Website: http://www.tekkub.net/
+## X-Email: tekkub-wow@googlegroups.com
+## X-Category: Questing
 
 ## RequiredDeps: TomTom
 
