@@ -4,6 +4,8 @@
 ## Notes: Meh
 ## Author: Tekkub Stoutwrithe
 
+## RequiredDeps: TomTom
+
 ## SavedVariablesPerCharacter: TourGuide_RecorderDB
 
 TourGuide_Recorder.lua
