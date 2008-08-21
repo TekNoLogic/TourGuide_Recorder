@@ -22,7 +22,6 @@ function f:ADDON_LOADED(event, addon)
 	if addon ~= "TourGuide_Recorder" then return end
 
 	TourGuide_RecorderDB = TourGuide_RecorderDB or ""
-	db = TourGuide_RecorderDB
 
 	self:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil
