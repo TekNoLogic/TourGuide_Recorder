@@ -1,0 +1,7 @@
+3.0.1.2-Beta
+    Fix slash command
+    Update to Astrolabe-0.4
+
+3.0.1.1-Beta
+    And so it begins...
+
