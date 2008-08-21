@@ -1,5 +1,6 @@
 
 
+local al = DongleStub("Astrolabe-0.4")
 local currentquests, oldquests, currentboards, oldboards, titles, firstscan, abandoning, db = {}, {}, {}, {}, {}, true
 local qids = setmetatable({}, {
 	__index = function(t,i)
@@ -63,7 +64,7 @@ function f:QUEST_LOG_UPDATE()
 		return
 	end
 
-	local _, _, x, y = DongleStub("Astrolabe-0.4-NC"):GetCurrentPlayerPosition()
+	local _, _, x, y = al:GetCurrentPlayerPosition()
 
 	for qidboard,text in pairs(currentboards) do
 		if not oldboards[qidboard] then
@@ -102,7 +103,7 @@ hooksecurefunc("UseContainerItem", function(bag, slot, ...)
 	local link = GetContainerItemLink(bag, slot)
 	if link and not used[link] then
 		used[link] = true
-		local _, _, x, y = DongleStub("Astrolabe-0.4-NC"):GetCurrentPlayerPosition()
+		local _, _, x, y = al:GetCurrentPlayerPosition()
 		Save(string.format("\nU %s |N|%s, %s (%.2f, %.2f)|", link, GetZoneText(), GetSubZoneText(), x*100, y*100))
 	end
 end)
@@ -110,6 +111,6 @@ end)
 
 SLASH_TGR1 = "/tgr"
 function SlashCmdList.TGR(self, msg)
-	local _, _, x, y = DongleStub("Astrolabe-0.4-NC"):GetCurrentPlayerPosition()
+	local _, _, x, y = al:GetCurrentPlayerPosition()
 	Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), x*100, y*100))
 end
