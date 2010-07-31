@@ -63,6 +63,8 @@ function f:QUEST_LOG_UPDATE()
 		return
 	end
 
+	if IsInInstance() then return end
+
 	local _, _, x, y = al:GetCurrentPlayerPosition()
 
 	for qidboard,text in pairs(currentboards) do
@@ -98,6 +100,7 @@ end
 
 local used = {}
 hooksecurefunc("UseContainerItem", function(bag, slot, ...)
+	if IsInInstance() then return end
 	if MerchantFrame:IsVisible() then return end
 	local link = GetContainerItemLink(bag, slot)
 	if link and not used[link] then
@@ -110,6 +113,7 @@ end)
 
 SLASH_TGR1 = "/tgr"
 function SlashCmdList.TGR(msg)
+	if IsInInstance() then return end
 	local _, _, x, y = al:GetCurrentPlayerPosition()
 	Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), x*100, y*100))
 end
