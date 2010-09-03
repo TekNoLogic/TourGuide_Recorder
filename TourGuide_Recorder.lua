@@ -36,7 +36,7 @@ end
 
 local function coords()
 	local x, y = GetPlayerMapPosition("player")
-	return (x or 0) * 100, (y or 0) * 100
+	return x * 100, y * 100
 end
 
 function f:QUEST_LOG_UPDATE()
