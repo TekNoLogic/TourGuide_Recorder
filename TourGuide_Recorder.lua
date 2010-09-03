@@ -1,6 +1,5 @@
 
 
-local al = DongleStub("Astrolabe-0.4")
 local currentquests, oldquests, currentboards, oldboards, titles, firstscan, abandoning, db = {}, {}, {}, {}, {}, true
 local qids = setmetatable({}, {
 	__index = function(t,i)
@@ -35,6 +34,11 @@ local function Save(val)
 	Debug(val:gsub("|", "||"):gsub("\n", ""))
 end
 
+local function coords()
+	local x, y = GetPlayerMapPosition("player")
+	return (x or 0) * 100, (y or 0) * 100
+end
+
 function f:QUEST_LOG_UPDATE()
 --~ 	Debug("QUEST_LOG_UPDATE")
 	currentquests, oldquests = oldquests, currentquests
@@ -65,18 +69,16 @@ function f:QUEST_LOG_UPDATE()
 
 	if IsInInstance() then return end
 
-	local _, _, x, y = al:GetCurrentPlayerPosition()
-
 	for qidboard,text in pairs(currentboards) do
 		if not oldboards[qidboard] then
-			Save(string.format("\n- |QID|%s| |QO|%s| |N|%s, %s (%.2f, %.2f)|", qidboard, text, GetZoneText(), GetSubZoneText(), x*100, y*100))
+			Save(string.format("\n- |QID|%s| |QO|%s| |N|%s, %s (%.2f, %.2f)|", qidboard, text, GetZoneText(), GetSubZoneText(), coords()))
 		end
 	end
 
 	for qid in pairs(oldquests) do
 		if not currentquests[qid] then
 			local action = abandoning and "Abandoned quest" or "Turned in quest"
-			if not abandoning then Save(string.format("\nT %s |QID|%s| |N|%s, %s (%.2f, %.2f)|", titles[qid], qid, GetZoneText(), GetSubZoneText(), x*100, y*100)) end
+			if not abandoning then Save(string.format("\nT %s |QID|%s| |N|%s, %s (%.2f, %.2f)|", titles[qid], qid, GetZoneText(), GetSubZoneText(), coords())) end
 			abandoning = nil
 			return
 		end
@@ -84,7 +86,7 @@ function f:QUEST_LOG_UPDATE()
 
 	for qid in pairs(currentquests) do
 		if not oldquests[qid] then
-			Save(string.format("\nA %s |QID|%s| |N|%s, %s (%.2f, %.2f)|", titles[qid], qid, GetZoneText(), GetSubZoneText(), x*100, y*100))
+			Save(string.format("\nA %s |QID|%s| |N|%s, %s (%.2f, %.2f)|", titles[qid], qid, GetZoneText(), GetSubZoneText(), coords()))
 			return
 		end
 	end
@@ -105,8 +107,7 @@ hooksecurefunc("UseContainerItem", function(bag, slot, ...)
 	local link = GetContainerItemLink(bag, slot)
 	if link and not used[link] then
 		used[link] = true
-		local _, _, x, y = al:GetCurrentPlayerPosition()
-		Save(string.format("\nU %s |N|%s, %s (%.2f, %.2f)|", link, GetZoneText(), GetSubZoneText(), x*100, y*100))
+		Save(string.format("\nU %s |N|%s, %s (%.2f, %.2f)|", link, GetZoneText(), GetSubZoneText(), coords()))
 	end
 end)
 
@@ -114,6 +115,5 @@ end)
 SLASH_TGR1 = "/tgr"
 function SlashCmdList.TGR(msg)
 	if IsInInstance() then return end
-	local _, _, x, y = al:GetCurrentPlayerPosition()
-	Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), x*100, y*100))
+	Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), coords()))
 end

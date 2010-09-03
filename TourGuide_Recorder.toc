@@ -8,8 +8,6 @@
 ## X-Email: tekkub-wow@googlegroups.com
 ## X-Category: Questing
 
-## RequiredDeps: TomTom
-
 ## SavedVariablesPerCharacter: TourGuide_RecorderDB
 
 TourGuide_Recorder.lua
