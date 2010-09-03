@@ -67,8 +67,6 @@ function f:QUEST_LOG_UPDATE()
 		return
 	end
 
-	if IsInInstance() then return end
-
 	for qidboard,text in pairs(currentboards) do
 		if not oldboards[qidboard] then
 			Save(string.format("\n- |QID|%s| |QO|%s| |N|%s, %s (%.2f, %.2f)|", qidboard, text, GetZoneText(), GetSubZoneText(), coords()))
@@ -102,7 +100,6 @@ end
 
 local used = {}
 hooksecurefunc("UseContainerItem", function(bag, slot, ...)
-	if IsInInstance() then return end
 	if MerchantFrame:IsVisible() then return end
 	local link = GetContainerItemLink(bag, slot)
 	if link and not used[link] then
@@ -114,6 +111,5 @@ end)
 
 SLASH_TGR1 = "/tgr"
 function SlashCmdList.TGR(msg)
-	if IsInInstance() then return end
 	Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), coords()))
 end
