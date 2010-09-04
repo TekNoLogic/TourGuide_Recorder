@@ -40,8 +40,8 @@ local function coords()
 	return x * 100, y * 100
 end
 
-function f:PLAYER_LEVEL_UP()
-	Save("\nN Level up! ".. UnitLevel("player"))
+function f:PLAYER_LEVEL_UP(event, level)
+	Save("\nN Level up! ".. level)
 end
 
 function f:QUEST_LOG_UPDATE()
