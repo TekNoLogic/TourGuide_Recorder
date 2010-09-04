@@ -26,6 +26,7 @@ function f:ADDON_LOADED(event, addon)
 	self.ADDON_LOADED = nil
 
 	self:RegisterEvent("QUEST_LOG_UPDATE")
+	self:RegisterEvent("PLAYER_LEVEL_UP")
 end
 
 
@@ -37,6 +38,10 @@ end
 local function coords()
 	local x, y = GetPlayerMapPosition("player")
 	return x * 100, y * 100
+end
+
+function f:PLAYER_LEVEL_UP()
+	Save("\nN Level up! ".. UnitLevel("player"))
 end
 
 function f:QUEST_LOG_UPDATE()
