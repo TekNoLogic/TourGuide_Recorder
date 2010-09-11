@@ -10,4 +10,5 @@
 
 ## SavedVariablesPerCharacter: TourGuide_RecorderDB
 
+tekPanelAuction.lua
 TourGuide_Recorder.lua
