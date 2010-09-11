@@ -1,4 +1,5 @@
 
+local myname, ns = ...
 
 local currentquests, oldquests, currentboards, oldboards, titles, firstscan, abandoning, db = {}, {}, {}, {}, {}, true
 local qids = setmetatable({}, {
@@ -114,7 +115,10 @@ hooksecurefunc("UseContainerItem", function(bag, slot, ...)
 end)
 
 
+local panel = ns.tekPanelAuction(nil, "TourGuide Recorder log")
+
 SLASH_TGR1 = "/tgr"
 function SlashCmdList.TGR(msg)
-	Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), coords()))
+	if msg:trim() == "" then ShowUIPanel(panel)
+	else Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), coords())) end
 end
