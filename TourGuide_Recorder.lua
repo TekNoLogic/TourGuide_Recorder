@@ -122,3 +122,21 @@ function SlashCmdList.TGR(msg)
 	if msg:trim() == "" then ShowUIPanel(panel)
 	else Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), coords())) end
 end
+
+
+local editbox = CreateFrame("EditBox", nil, panel)
+editbox:SetPoint("TOPLEFT", 25, -75)
+editbox:SetPoint("BOTTOMRIGHT", -15, 40)
+editbox:SetFontObject(GameFontHighlightSmall)
+editbox:SetMultiLine(true)
+editbox:SetAutoFocus(false)
+local function SetEditbox()
+	editbox:SetText(TourGuide_RecorderDB:trim():gsub("|N", "||N"))
+	editbox:HighlightText()
+end
+editbox:SetScript("OnShow", function(self)
+	self:SetFocus()
+	SetEditbox()
+end)
+editbox:SetScript("OnEscapePressed", function() HideUIPanel(panel) end)
+editbox:SetScript("OnTextChanged", function(self, user) if user then SetEditbox() end end)
