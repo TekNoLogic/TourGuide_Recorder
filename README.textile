@@ -7,7 +7,7 @@ What it does:
 * Record when the player uses an item
 * Provides @/tgr@ command to add manual notes to the record
 
-Users in the Wrath beta, I welcome your logs.  Email them to tgr@tekkub.net
+Users in the beta, I welcome your logs.  Email them to tgr@tekkub.net
 
 h2. Links
 
