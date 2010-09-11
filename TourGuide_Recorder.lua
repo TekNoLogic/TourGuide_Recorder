@@ -140,3 +140,37 @@ editbox:SetScript("OnShow", function(self)
 end)
 editbox:SetScript("OnEscapePressed", function() HideUIPanel(panel) end)
 editbox:SetScript("OnTextChanged", function(self, user) if user then SetEditbox() end end)
+
+
+StaticPopupDialogs["TOURGUIDE_RECORDER_RESET"] = {
+	text = "Really erase TourGuide Recorder's log?",
+	button1 = "Yes",
+	button2 = "No",
+	OnAccept = function() TourGuide_RecorderDB = ""; SetEditbox() end,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+}
+
+local b = CreateFrame("Button", nil, panel)
+b:SetPoint("TOPRIGHT", editbox, "BOTTOMRIGHT", 8, -3)
+b:SetWidth(80) b:SetHeight(22)
+
+-- Fonts --
+b:SetDisabledFontObject(GameFontDisable)
+b:SetHighlightFontObject(GameFontHighlight)
+b:SetNormalFontObject(GameFontNormal)
+
+-- Textures --
+b:SetNormalTexture("Interface\\Buttons\\UI-Panel-Button-Up")
+b:SetPushedTexture("Interface\\Buttons\\UI-Panel-Button-Down")
+b:SetHighlightTexture("Interface\\Buttons\\UI-Panel-Button-Highlight")
+b:SetDisabledTexture("Interface\\Buttons\\UI-Panel-Button-Disabled")
+b:GetNormalTexture():SetTexCoord(0, 0.625, 0, 0.6875)
+b:GetPushedTexture():SetTexCoord(0, 0.625, 0, 0.6875)
+b:GetHighlightTexture():SetTexCoord(0, 0.625, 0, 0.6875)
+b:GetDisabledTexture():SetTexCoord(0, 0.625, 0, 0.6875)
+b:GetHighlightTexture():SetBlendMode("ADD")
+
+b:SetText("Clear")
+b:SetScript("OnCLick", function() StaticPopup_Show("TOURGUIDE_RECORDER_RESET") end)
