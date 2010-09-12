@@ -124,10 +124,23 @@ function SlashCmdList.TGR(msg)
 end
 
 
-local editbox = CreateFrame("EditBox", nil, panel)
-editbox:SetPoint("TOPLEFT", 25, -75)
-editbox:SetPoint("BOTTOMRIGHT", -15, 40)
+local LINEHEIGHT, maxoffset, offset = 12, 0, 0
+
+
+local scroll = CreateFrame("ScrollFrame", nil, panel)
+scroll:SetPoint("TOPLEFT", 21, -73)
+scroll:SetPoint("BOTTOMRIGHT", -10, 38)
+local HEIGHT = scroll:GetHeight()
+
+
+local editbox = CreateFrame("EditBox", nil, scroll)
+scroll:SetScrollChild(editbox)
+editbox:SetPoint("TOP")
+editbox:SetPoint("LEFT")
+editbox:SetPoint("RIGHT")
+editbox:SetHeight(1000)
 editbox:SetFontObject(GameFontHighlightSmall)
+editbox:SetTextInsets(2,2,2,2)
 editbox:SetMultiLine(true)
 editbox:SetAutoFocus(false)
 local function SetEditbox()
@@ -142,6 +155,28 @@ editbox:SetScript("OnEscapePressed", function() HideUIPanel(panel) end)
 editbox:SetScript("OnTextChanged", function(self, user) if user then SetEditbox() end end)
 
 
+local function doscroll(v)
+	offset = math.max(math.min(v, 0), maxoffset)
+	scroll:SetVerticalScroll(-offset)
+	editbox:SetPoint("TOP", 0, offset)
+end
+
+editbox:SetScript("OnCursorChanged", function(self, x, y, width, height)
+	LINEHEIGHT = height
+	if offset < y then
+		doscroll(y)
+	elseif math.floor(offset - HEIGHT + height*2) > y then
+		local v = y + HEIGHT - height*2
+		maxoffset = math.min(maxoffset, v)
+		doscroll(v)
+	end
+end)
+
+scroll:UpdateScrollChildRect()
+scroll:EnableMouseWheel(true)
+scroll:SetScript("OnMouseWheel", function(self, val) doscroll(offset + val*LINEHEIGHT*3) end)
+
+
 StaticPopupDialogs["TOURGUIDE_RECORDER_RESET"] = {
 	text = "Really erase TourGuide Recorder's log?",
 	button1 = "Yes",
@@ -153,7 +188,7 @@ StaticPopupDialogs["TOURGUIDE_RECORDER_RESET"] = {
 }
 
 local b = CreateFrame("Button", nil, panel)
-b:SetPoint("TOPRIGHT", editbox, "BOTTOMRIGHT", 8, -3)
+b:SetPoint("TOPRIGHT", scroll, "BOTTOMRIGHT", 3, -1)
 b:SetWidth(80) b:SetHeight(22)
 
 -- Fonts --
