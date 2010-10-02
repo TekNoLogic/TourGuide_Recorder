@@ -1,3 +1,7 @@
+4.0.0.5-Beta
+    Bugger, that needs to be a scrolly frame
+    Betas!
+
 4.0.0.4-Beta
     No more TomTom ReqDep
     Instance check no longer needed
