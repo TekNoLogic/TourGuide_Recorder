@@ -1,3 +1,6 @@
+4.0.0.6-Beta
+    God I wish editboxes had a "raw text" mode
+
 4.0.0.5-Beta
     Bugger, that needs to be a scrolly frame
     Betas!
