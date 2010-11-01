@@ -1,7 +1,7 @@
 
 local myname, ns = ...
 
-local currentquests, oldquests, currentboards, oldboards, titles, firstscan, abandoning, db = {}, {}, {}, {}, {}, true
+local currentcompletes, oldcompletes, currentquests, oldquests, currentboards, oldboards, titles, firstscan, abandoning, db = {}, {}, {}, {}, {}, {}, {}, true
 local qids = setmetatable({}, {
 	__index = function(t,i)
 		local v = tonumber(i:match("|Hquest:(%d+):"))
@@ -54,15 +54,19 @@ function f:QUEST_LOG_UPDATE()
 --~ 	Debug("QUEST_LOG_UPDATE")
 	currentquests, oldquests = oldquests, currentquests
 	currentboards, oldboards = oldboards, currentboards
+	currentcompletes, oldcompletes = oldcompletes, currentcompletes
 	for i in pairs(currentquests) do currentquests[i] = nil end
 	for i in pairs(currentboards) do currentboards[i] = nil end
+	for i in pairs(currentcompletes) do currentcompletes[i] = nil end
 
 	for i=1,GetNumQuestLogEntries() do
 		local link = GetQuestLink(i)
 		local qid = link and qids[link]
 		if qid then
 			currentquests[qid] = true
-			titles[qid] = GetQuestLogTitle(i)
+			local title, _, _, _, _, _, complete = GetQuestLogTitle(i)
+			titles[qid] = title
+			currentcompletes[qid] = complete == 1 and title or nil
 
 			for j=1,GetNumQuestLeaderBoards(i) do
 				local text, objtype, finished = GetQuestLogLeaderBoard(j, i)
@@ -82,6 +86,12 @@ function f:QUEST_LOG_UPDATE()
 		if not oldboards[qidboard] then
 			Save(string.format("\n- |QID|%s| |QO|%s|", qidboard, text))
 			SaveCoords()
+		end
+	end
+
+	for qidcomplete,title in pairs(currentcompletes) do
+		if not oldcompletes[qidcomplete] then
+			Save(string.format("\nC %s |QID|%s|", title, qidcomplete))
 		end
 	end
 
