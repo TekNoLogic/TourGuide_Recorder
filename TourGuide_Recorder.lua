@@ -41,8 +41,13 @@ local function coords()
 	return x * 100, y * 100
 end
 
+local function SaveCoords()
+	local x, y = GetPlayerMapPosition("player")
+	Save(string.format("\n- %s, %s (%.2f, %.2f)", GetZoneText(), GetSubZoneText(), x * 100, y * 100))
+end
+
 function f:PLAYER_LEVEL_UP(event, level)
-	Save("\nN Level up! ".. level)
+	Save("\n- Level up! ".. level)
 end
 
 function f:QUEST_LOG_UPDATE()
@@ -75,14 +80,15 @@ function f:QUEST_LOG_UPDATE()
 
 	for qidboard,text in pairs(currentboards) do
 		if not oldboards[qidboard] then
-			Save(string.format("\n- |QID|%s| |QO|%s| |N|%s, %s (%.2f, %.2f)|", qidboard, text, GetZoneText(), GetSubZoneText(), coords()))
+			Save(string.format("\n- |QID|%s| |QO|%s|", qidboard, text))
+			SaveCoords()
 		end
 	end
 
 	for qid in pairs(oldquests) do
 		if not currentquests[qid] then
 			local action = abandoning and "Abandoned quest" or "Turned in quest"
-			if not abandoning then Save(string.format("\nT %s |QID|%s| |N|%s, %s (%.2f, %.2f)|", titles[qid], qid, GetZoneText(), GetSubZoneText(), coords())) end
+			if not abandoning then Save(string.format("\nT %s |QID|%s|", titles[qid], qid)) end
 			abandoning = nil
 			return
 		end
@@ -90,7 +96,8 @@ function f:QUEST_LOG_UPDATE()
 
 	for qid in pairs(currentquests) do
 		if not oldquests[qid] then
-			Save(string.format("\nA %s |QID|%s| |N|%s, %s (%.2f, %.2f)|", titles[qid], qid, GetZoneText(), GetSubZoneText(), coords()))
+			Save(string.format("\nA %s |QID|%s|", titles[qid], qid))
+			SaveCoords()
 			return
 		end
 	end
@@ -110,7 +117,8 @@ hooksecurefunc("UseContainerItem", function(bag, slot, ...)
 	local link = GetContainerItemLink(bag, slot)
 	if link and not used[link] then
 		used[link] = true
-		Save(string.format("\nU %s |N|%s, %s (%.2f, %.2f)|", link, GetZoneText(), GetSubZoneText(), coords()))
+		Save("\n- U ".. link)
+		SaveCoords()
 	end
 end)
 
@@ -120,7 +128,10 @@ local panel = ns.tekPanelAuction(nil, "TourGuide Recorder log")
 SLASH_TGR1 = "/tgr"
 function SlashCmdList.TGR(msg)
 	if msg:trim() == "" then ShowUIPanel(panel)
-	else Save(string.format("\nN %s |N|%s, %s (%.2f, %.2f)|", msg or "No note", GetZoneText(), GetSubZoneText(), coords())) end
+	else
+		Save("\n- Usernote: ".. (msg or "No note"))
+		SaveCoords()
+	end
 end
 
 
