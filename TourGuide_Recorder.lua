@@ -165,7 +165,7 @@ editbox:SetTextInsets(2,2,2,2)
 editbox:SetMultiLine(true)
 editbox:SetAutoFocus(false)
 local function SetEditbox()
-	editbox:SetText(TourGuide_RecorderDB:trim():gsub("|cff......|H(item:%d+):[%d:]+|h([^|]+)|h|r", "%1 %2"):gsub("|", "||"))
+	editbox:SetText(TourGuide_RecorderDB:trim():gsub("|cff......|H(item:%d+):[%d:-]+|h([^|]+)|h|r", "%1 %2"):gsub("|", "||"))
 	editbox:HighlightText()
 end
 editbox:SetScript("OnShow", function(self)
