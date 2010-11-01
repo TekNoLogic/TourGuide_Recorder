@@ -1,3 +1,8 @@
+4.0.0.7-Beta
+    Record completes as well, so raw guides are more useful
+    Change how (and when) coords are saved
+    Stupid itemlinks
+
 4.0.0.6-Beta
     God I wish editboxes had a "raw text" mode
 
