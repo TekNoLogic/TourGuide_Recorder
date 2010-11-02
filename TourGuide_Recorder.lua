@@ -1,7 +1,7 @@
 
 local myname, ns = ...
 
-local currentcompletes, oldcompletes, currentquests, oldquests, currentboards, oldboards, titles, firstscan, abandoning, db = {}, {}, {}, {}, {}, {}, {}, true
+local accepted, currentcompletes, oldcompletes, currentquests, oldquests, currentboards, oldboards, titles, firstscan, abandoning, db = {}, {}, {}, {}, {}, {}, {}, {}, true
 local qids = setmetatable({}, {
 	__index = function(t,i)
 		local v = tonumber(i:match("|Hquest:(%d+):"))
@@ -83,14 +83,14 @@ function f:QUEST_LOG_UPDATE()
 	end
 
 	for qidboard,text in pairs(currentboards) do
-		if not oldboards[qidboard] then
+		if not oldboards[qidboard] and accepted[qidboard] then
 			Save(string.format("\n- |QID|%s| |QO|%s|", qidboard, text))
 			SaveCoords()
 		end
 	end
 
 	for qidcomplete,title in pairs(currentcompletes) do
-		if not oldcompletes[qidcomplete] then
+		if not oldcompletes[qidcomplete] and accepted[qidcomplete] then
 			Save(string.format("\nC %s |QID|%s|", title, qidcomplete))
 		end
 	end
@@ -99,6 +99,7 @@ function f:QUEST_LOG_UPDATE()
 		if not currentquests[qid] then
 			local action = abandoning and "Abandoned quest" or "Turned in quest"
 			if not abandoning then Save(string.format("\nT %s |QID|%s|", titles[qid], qid)) end
+			accepted[qid] = nil
 			abandoning = nil
 			return
 		end
@@ -106,6 +107,7 @@ function f:QUEST_LOG_UPDATE()
 
 	for qid in pairs(currentquests) do
 		if not oldquests[qid] then
+			accepted[qid] = true
 			Save(string.format("\nA %s |QID|%s|", titles[qid], qid))
 			SaveCoords()
 			return
