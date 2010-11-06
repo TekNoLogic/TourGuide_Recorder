@@ -78,6 +78,7 @@ function f:QUEST_LOG_UPDATE()
 	end
 
 	if firstscan then
+	 	for qid in currentquests do accepted[qid] = true end
 		firstscan = nil
 		return
 	end
