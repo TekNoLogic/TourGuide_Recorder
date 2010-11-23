@@ -3,11 +3,12 @@ TourGuide Recorder is an addon to track the user as he quests, for later use in 
 What it does:
 
 * Record when a quest is accepted, turned in, and when each objective is competed
-* Record the zone, subzone and coords for every event
-* Record when the player uses an item
+* Record the zone, subzone and coords for events that might need them
+* Record when the player uses an item (for those "go zap 12 lizards with this thingmabob" quests)
 * Provides @/tgr@ command to add manual notes to the record
+* In-game panel to copy and clear the log, accessable with the @/tgr@ command
 
-Users in the beta, I welcome your logs.  Email them to tgr@tekkub.net
+I'm looking for logs for all zones now that the cataclysm has hit.  Please email tgr@tekkub.net for details on how to submit your logs.
 
 h2. Links
 
