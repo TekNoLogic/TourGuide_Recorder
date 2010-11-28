@@ -28,6 +28,7 @@ function f:ADDON_LOADED(event, addon)
 
 	self:RegisterEvent("QUEST_LOG_UPDATE")
 	self:RegisterEvent("PLAYER_LEVEL_UP")
+	self:RegisterEvent("QUEST_AUTOCOMPLETE")
 end
 
 
@@ -48,6 +49,11 @@ end
 
 function f:PLAYER_LEVEL_UP(event, level)
 	Save("\n- Level up! ".. level)
+end
+
+local lastautocomplete
+function f:QUEST_AUTOCOMPLETE(event, qid)
+	lastautocomplete = qid
 end
 
 function f:QUEST_LOG_UPDATE()
@@ -100,6 +106,7 @@ function f:QUEST_LOG_UPDATE()
 		if not currentquests[qid] then
 			local action = abandoning and "Abandoned quest" or "Turned in quest"
 			if not abandoning then Save(string.format("\nT %s |QID|%s|", titles[qid], qid)) end
+			if lastautocomplete == qid then Save("- Field turnin") end
 			accepted[qid] = nil
 			abandoning = nil
 			return
@@ -109,6 +116,12 @@ function f:QUEST_LOG_UPDATE()
 	for qid in pairs(currentquests) do
 		if not oldquests[qid] then
 			accepted[qid] = true
+			for i=1,GetNumAutoQuestPopUps() do
+				local questID, popUpType = GetAutoQuestPopUp(i)
+				if questID == qid and popUpType == "OFFER" then
+					Save("- Auto quest:")
+				end
+			end
 			Save(string.format("\nA %s |QID|%s|", titles[qid], qid))
 			SaveCoords()
 			return
