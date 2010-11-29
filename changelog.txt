@@ -1,3 +1,9 @@
+4.0.0.8-Beta
+    Readme update for 4.0.3 day
+    Add support for discovered and field-turnin quests
+    Need to remember what quests we've already accepted on load
+    Don't record a complete entry for insta-completed quests (fedexes with objective)
+
 4.0.0.7-Beta
     Record completes as well, so raw guides are more useful
     Change how (and when) coords are saved
