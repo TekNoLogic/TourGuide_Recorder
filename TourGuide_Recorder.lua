@@ -106,7 +106,7 @@ function f:QUEST_LOG_UPDATE()
 		if not currentquests[qid] then
 			local action = abandoning and "Abandoned quest" or "Turned in quest"
 			if not abandoning then Save(string.format("\nT %s |QID|%s|", titles[qid], qid)) end
-			if lastautocomplete == qid then Save("- Field turnin") end
+			if lastautocomplete == qid then Save("\n- Field turnin") end
 			accepted[qid] = nil
 			abandoning = nil
 			return
@@ -119,7 +119,7 @@ function f:QUEST_LOG_UPDATE()
 			for i=1,GetNumAutoQuestPopUps() do
 				local questID, popUpType = GetAutoQuestPopUp(i)
 				if questID == qid and popUpType == "OFFER" then
-					Save("- Auto quest:")
+					Save("\n- Auto quest:")
 				end
 			end
 			Save(string.format("\nA %s |QID|%s|", titles[qid], qid))
